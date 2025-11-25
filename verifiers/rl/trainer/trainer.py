@@ -398,6 +398,7 @@ class RLTrainer(Trainer):
         try:
             return super()._inner_training_loop(*args, **kwargs)
         finally:
+            print("CLEANUP ORCHESTRATOR")
             # cleanup
             if self.orchestrator:
                 self.orchestrator.stop()
