@@ -198,7 +198,9 @@ class Orchestrator:
         try:
             while not self.stop_event.is_set():
                 try:
+                    print("START request queue get")
                     batch_id = self.request_queue.get(timeout=0.1)
+                    print("END request queue get")
                     if batch_id is None:  # poison pill
                         break
                     print("START running loop")
