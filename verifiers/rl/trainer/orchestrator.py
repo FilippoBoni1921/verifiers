@@ -165,6 +165,7 @@ class Orchestrator:
         timeout = self.generation_timeout
         start_time = time.time()
         print("batch id",batch_id)
+        print("completed batches", self.completed_batches)
         while True:
             if batch_id in self.completed_batches:
                 return self.completed_batches.pop(batch_id)
