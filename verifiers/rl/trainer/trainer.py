@@ -140,6 +140,7 @@ class RLTrainer(Trainer):
         **kwargs,
     ) -> torch.Tensor:
         self.update_vllm()
+        print("global_state:", self.state.global_step)
         if self.orchestrator:
             self.orchestrator.submit_batch(self.state.global_step + 1)
 
