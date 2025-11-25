@@ -170,7 +170,9 @@ class Orchestrator:
             if batch_id in self.completed_batches:
                 return self.completed_batches.pop(batch_id)
             try:
+                print("getting_restult start")
                 result = self.result_queue.get(timeout=0.1)
+                print("getting_restult end")
                 self.completed_batches[result.batch_id] = result
                 if result.batch_id == batch_id:
                     return self.completed_batches.pop(batch_id)
@@ -199,7 +201,9 @@ class Orchestrator:
                     batch_id = self.request_queue.get(timeout=0.1)
                     if batch_id is None:  # poison pill
                         break
+                    print("START running loop")
                     result = loop.run_until_complete(self.generate_batch(batch_id))
+                    print("END running loop")
                     self.result_queue.put(result)
                 except queue.Empty:
                     continue
@@ -220,6 +224,7 @@ class Orchestrator:
         start_time = time.time()
         batch_ds = self.get_dataset_slice(batch_id)
         repeated_ds = batch_ds.repeat(self.rollouts_per_example)
+        print("START generate env")
         env_results = await self.env.generate(
             repeated_ds,
             client=self.client,
@@ -227,6 +232,7 @@ class Orchestrator:
             sampling_args=self.sampling_args,
             max_concurrent=self.max_concurrent,
         )
+        print("END generate env")
         self.is_generating = False
         wall_clock_s = time.time() - start_time
 
