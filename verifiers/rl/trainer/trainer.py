@@ -119,6 +119,7 @@ class RLTrainer(Trainer):
                 max_concurrent=args.max_concurrent,
             )
             self.orchestrator.start()
+            print("SUBMIT BATCH ORCHESTRATOR")
             self.orchestrator.submit_batch(0)
         else:
             self.orchestrator = None
@@ -142,7 +143,7 @@ class RLTrainer(Trainer):
         self.update_vllm()
         print("GLOBAL STATE:", self.state.global_step)
         if self.orchestrator:
-            print("SUBMIT BATCH")
+            print("SUBMIT BATCH TRAINING")
             self.orchestrator.submit_batch(self.state.global_step + 1)
 
         broadcast_list = [None]
