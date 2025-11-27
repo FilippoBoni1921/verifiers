@@ -140,6 +140,7 @@ class Orchestrator:
     def stop(self):
         """Stop the async generation worker thread"""
         self.stop_event.set()
+        print("STOP")
         self.request_queue.put(None)  # poison pill
         if self.worker_thread:
             self.worker_thread.join(timeout=10.0)
@@ -205,8 +206,10 @@ class Orchestrator:
                         break
                     print("START running loop")
                     result = loop.run_until_complete(self.generate_batch(batch_id))
+                    print("PRINT RESULT", len(result))
                     print("END running loop")
                     self.result_queue.put(result)
+                    print("LEN RESULTS", self.result_queue.qsize())
                 except queue.Empty:
                     continue
                 except Exception as e:

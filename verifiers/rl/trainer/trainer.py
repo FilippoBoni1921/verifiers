@@ -150,6 +150,7 @@ class RLTrainer(Trainer):
         if self.orchestrator:
             broadcast_list = [self.orchestrator.get_batch(self.state.global_step)]
         broadcast_object_list(broadcast_list)
+        print("GOT BROADCAST")
         assert broadcast_list[0] is not None
         batch = broadcast_list[0]
 
