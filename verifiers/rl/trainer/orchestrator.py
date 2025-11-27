@@ -206,7 +206,6 @@ class Orchestrator:
                         break
                     print("START running loop")
                     result = loop.run_until_complete(self.generate_batch(batch_id))
-                    print("PRINT RESULT", len(result))
                     print("END running loop")
                     self.result_queue.put(result)
                     print("LEN RESULTS", self.result_queue.qsize())
