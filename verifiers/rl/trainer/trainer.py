@@ -179,7 +179,8 @@ class RLTrainer(Trainer):
         assert pad_token_id is not None
 
         print("2")
-        for microbatch in local_microbatches:
+        from tqdm import tqdm
+        for microbatch in tqdm(local_microbatches, desc="MICROBATCHES", total=len(local_microbatches)):
             input_ids = pad(
                 [torch.tensor(x, device=device) for x in microbatch.input_ids],
                 padding_value=pad_token_id,  # type: ignore :(
