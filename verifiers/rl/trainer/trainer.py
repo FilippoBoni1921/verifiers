@@ -158,6 +158,8 @@ class RLTrainer(Trainer):
         total_loss = torch.zeros((), device=self.accelerator.device)
         local_microbatches = batch.microbatches[self.accelerator.process_index]
 
+        print("1")
+
         if batch.global_item_count <= 0:
             return total_loss
 
@@ -176,6 +178,7 @@ class RLTrainer(Trainer):
         pad_token_id = getattr(self.processing_class, "pad_token_id", None)
         assert pad_token_id is not None
 
+        print("2")
         for microbatch in local_microbatches:
             input_ids = pad(
                 [torch.tensor(x, device=device) for x in microbatch.input_ids],
@@ -222,6 +225,7 @@ class RLTrainer(Trainer):
             update_stat_tracker(entropy_tracker, summaries["entropy"])
             update_stat_tracker(mismatch_kl_tracker, summaries["mismatch_kl"])
 
+        print("3")
         ir_mean = finalize_stat_tracker(ir_tracker, self.accelerator)
         entropy_mean = finalize_stat_tracker(entropy_tracker, self.accelerator)
         mismatch_kl_mean = finalize_stat_tracker(mismatch_kl_tracker, self.accelerator)
